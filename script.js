@@ -27,3 +27,14 @@ document.querySelector('#contact-form').addEventListener('submit', event => { ev
 ['contact-name', 'contact-message'].forEach(id => document.getElementById(id).addEventListener('input', event => event.target.setCustomValidity('')));
 document.querySelector('#copy-inquiry').addEventListener('click', async () => { const output = document.querySelector('#inquiry-output'); try { await navigator.clipboard.writeText(output.value); document.querySelector('#copy-status').textContent = '已复制'; } catch { output.focus(); output.select(); document.querySelector('#copy-status').textContent = '请手动复制已选中的内容'; } });
 document.querySelector('#year').textContent = new Date().getFullYear();
+
+const brandVideo = document.querySelector('#brand-video');
+const videoToggle = document.querySelector('#video-toggle');
+const videoStatus = document.querySelector('#video-status');
+function updateVideoButton() { videoToggle.textContent = brandVideo.paused ? '播放视频' : '暂停视频'; }
+brandVideo.addEventListener('play', updateVideoButton);
+brandVideo.addEventListener('pause', updateVideoButton);
+brandVideo.addEventListener('error', () => { videoStatus.textContent = '视频暂时无法播放，请刷新页面或使用视频下载链接。'; });
+videoToggle.addEventListener('click', async () => { if (brandVideo.paused) { try { await brandVideo.play(); videoStatus.textContent = '视频默认静音播放，可使用播放器控件开启声音。'; } catch { videoStatus.textContent = '自动播放受限，请使用播放器的播放按钮。'; } } else { brandVideo.pause(); } });
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { brandVideo.autoplay = false; brandVideo.pause(); }
+updateVideoButton();
