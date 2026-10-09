@@ -23,9 +23,6 @@ function selectTab(tab) {
   document.querySelector('#view-description').textContent = view.description;
 }
 tabs.forEach((tab, index) => { tab.addEventListener('click', () => selectTab(tab)); tab.addEventListener('keydown', event => { let target; if (event.key === 'ArrowRight') target = tabs[(index + 1) % tabs.length]; if (event.key === 'ArrowLeft') target = tabs[(index + tabs.length - 1) % tabs.length]; if (event.key === 'Home') target = tabs[0]; if (event.key === 'End') target = tabs[tabs.length - 1]; if (target) { event.preventDefault(); selectTab(target); target.focus(); } }); });
-document.querySelector('#contact-form').addEventListener('submit', event => { event.preventDefault(); const name = document.querySelector('#contact-name'); const message = document.querySelector('#contact-message'); if (!name.value.trim() || !message.value.trim()) { const field = !name.value.trim() ? name : message; field.setCustomValidity('请输入有效内容'); field.reportValidity(); return; } document.querySelector('#inquiry-output').value = `识加科技 · 智能养殖项目咨询\n联系人 / 公司：${name.value.trim()}\n项目需求：${message.value.trim()}`; document.querySelector('#form-result').hidden = false; document.querySelector('#copy-status').textContent = ''; });
-['contact-name', 'contact-message'].forEach(id => document.getElementById(id).addEventListener('input', event => event.target.setCustomValidity('')));
-document.querySelector('#copy-inquiry').addEventListener('click', async () => { const output = document.querySelector('#inquiry-output'); try { await navigator.clipboard.writeText(output.value); document.querySelector('#copy-status').textContent = '已复制'; } catch { output.focus(); output.select(); document.querySelector('#copy-status').textContent = '请手动复制已选中的内容'; } });
 document.querySelector('#year').textContent = new Date().getFullYear();
 
 const brandVideo = document.querySelector('#brand-video');
